@@ -1,4 +1,5 @@
-# task-project
+# task-project 
+My work on building project in IT Guru Think Mobiles named "Home therapy". Progect in the end of part of front-end.
 
 ## Project setup
 ```
@@ -17,3 +18,4 @@ npm run build
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
