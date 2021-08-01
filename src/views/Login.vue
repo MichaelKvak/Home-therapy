@@ -1,0 +1,116 @@
+<template>
+  <form
+    class="card auth-card"
+    @submit.prevent="submitHandler"
+    style=" opacity: 0.8"
+  >
+    <div class="card-content">
+      <span class="card-title">Home therapy</span>
+      <div class="input-field">
+        <input
+          id="email"
+          type="text"
+          autocomplete="current-email"
+          v-model.trim="email"
+          :class="{
+            invalid:
+              ($v.email.$dirty && !$v.email.required) ||
+              ($v.email.$dirty && !$v.email.email),
+          }"
+        />
+        <label for="email">{{ "Email" | localize }}</label>
+        <small
+          class="helper-text invalid"
+          v-if="$v.email.$dirty && !$v.email.required"
+          >{{ "Email field mustn't be empty" | localize }}</small
+        >
+        <small
+          class="helper-text invalid"
+          v-else-if="$v.email.$dirty && !$v.email.email"
+          >{{ "Enter right email" | localize }}</small
+        >
+      </div>
+      <div class="input-field">
+        <input
+          id="password"
+          type="password"
+          autocomplete="current-password"
+          v-model.trim="password"
+          :class="{
+            invalid:
+              ($v.password.$dirty && !$v.password.required) ||
+              ($v.password.$dirty && !$v.password.minLength),
+          }"
+        />
+        <label for="password">{{ "Password" | localize }}</label>
+        <small
+          class="helper-text invalid"
+          v-if="$v.password.$dirty && !$v.password.required"
+          >{{ "Enter password" | localize }}
+        </small>
+        <small
+          class="helper-text invalid"
+          v-else-if="$v.password.$dirty && !$v.password.minLength"
+          >{{ "Password must be longer" | localize }}
+          {{ $v.password.$params.minLength.min }}
+          {{ "simbols, now it is" | localize }} {{ password.length }}
+          {{ "simbols" | localize }}
+        </small>
+      </div>
+    </div>
+    <div class="card-action">
+      <div>
+        <button class="btn waves-effect waves-light auth-submit" type="submit">
+          {{ "Enter" | localize }}
+          <i class="material-icons right">send</i>
+        </button>
+      </div>
+
+      <p class="center">
+        {{ "Have't account?" | localize }}
+        <router-link to="/register">{{ "Sing up" | localize }}</router-link>
+      </p>
+    </div>
+  </form>
+</template>
+
+<script>
+import { email, required, minLength } from "vuelidate/lib/validators";
+import messages from "@/utils/messages";
+export default {
+  name: "login",
+  data() {
+    return {
+      email: "",
+      password: "",
+    };
+  },
+  validations: {
+    email: { email, required },
+    password: { required, minLength: minLength(6) },
+  },
+  mounted() {
+    if (messages[this.$route.query.message]) {
+      this.$message(messages[this.$route.query.message]);
+    }
+  },
+  methods: {
+    async submitHandler() {
+      if (this.$v.$invalid) {
+        this.$v.$touch();
+        return;
+      }
+      const formData = {
+        email: this.email,
+        password: this.password,
+      };
+      try {
+        await this.$store.dispatch("login", formData);
+        this.$router.push("/create");
+      } catch (e) {}
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped></style>
