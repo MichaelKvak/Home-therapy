@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import auth from "./auth";
 import info from "./info";
+import axios from "axios";
 
 Vue.use(Vuex);
 

@@ -1,8 +1,12 @@
-import firebase from "firebase/app";
+// import firebase from "firebase/app";
+import axios from "axios";
 
 export default {
   state: {
     info: {},
+  },
+  getters: {
+    info: (s) => s.info,
   },
   mutations: {
     setInfo(state, info) {
@@ -39,8 +43,5 @@ export default {
         commit("setInfo", info);
       } catch (e) {}
     },
-  },
-  getters: {
-    info: (s) => s.info,
   },
 };
